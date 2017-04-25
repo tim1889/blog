@@ -4,58 +4,68 @@ date: 2017-04-25 13:39:25
 tags: js
 ---
 
-## this 的默认调用
+> this 的调用总是决定于最后调用那个函数的上下文！
+<!--more-->
 
-this 默认调用于全局
+## this 的默认调用
+> this 默认调用于全局
 
 ```
 function fun() {
     console.log(this.name);
 }
+````
+声明一个函数 fun
 
+````
 var name = 'Tim';
 
 fun()   // tim
 ```
-
+在全局中声明了变量 name ,此时在全局中引用了 `fun()` 此时 函数中的 name 就是指向的是全局中的 name
 
 ## this 的隐式绑定
-
-决定于最后调用函数的上下文
+> 决定于最后调用函数的上下文
 
 ```
-function fun() {
-    console.log(this.name)
-}
-
 var obj_1 = {
     name: 'Joey',
     fun: fun
 }
-obj_1.fun()  //Joey，最后调用 fun  的是 obj_1
+obj_1.fun() //Joey
+```
+最后调用 fun 的是 obj_1
 
+```
 var obj_2 = {
     name: 'Allen',
     fun: obj_1.fun
 }
-obj_2.fun()  //Allen，最后调用 fun  的是 obj_2
+obj_2.fun()  //Allen
+```
+最后调用 fun 的是 obj_2
 
+```
 var obj_3 = {
     name: 'Alice',
     fun: obj_1
 }
-obj_3.fun.fun()  //Joey，最后调用 fun  的是 obj_2
+obj_3.fun.fun()  //Joey
+```
+最后调用 fun 的是 obj_2
 
+```
 var bar = obj_1.fun;
 
-bar()   //undefind，最后调用 fun  的是 global，而 global 中并未定义 name
+bar()   //undefind
 ```
+最后调用 fun  的是 global，而 global 中并未定义 name
 
 ## this 的显示绑定
 
 - call
 
-    绑定在 call() 中传入的第一个参数上 ` fun.call(obj, arg1, arg2,...) ` fun 的 this 绑定在 obj 上 
+   > 绑定在 call() 中传入的第一个参数上 ` fun.call(obj, arg1, arg2,...) ` fun 的 this 绑定在 obj 上 
 
     ```
     var obj = {
@@ -71,7 +81,7 @@ bar()   //undefind，最后调用 fun  的是 global，而 global 中并未定�
 
 - apply
 
-    同 call ，不同在于传入的第二个参数是一个数组 `apply(obj, arguments)`
+    > 同 call ，不同在于传入的第二个参数是一个数组 `apply(obj, arguments)`
    
     ```
     function Obj(name, age, gender) {
@@ -86,7 +96,7 @@ bar()   //undefind，最后调用 fun  的是 global，而 global 中并未定�
 
     var fun = new Fun('Tim', '18', 'female');
 
-    console.log(fun.name, fun.age, fun.gender);
+    console.log(fun.name, fun.age, fun.gender); //Tim, 18, female
     ```
     apply 将 Obj 的 this 绑定在了 fun 上 （new 的绑定见下）
 
@@ -95,14 +105,15 @@ bar()   //undefind，最后调用 fun  的是 global，而 global 中并未定�
 
 ## new 新对象绑定
 
-this 绑定在 新创建的对象上
+> this 绑定在 新创建的对象上
 
 ```
 function Anmail(name) {
     this.name = name;
 }
 
-var cat = new Animal('cat');
+var cat = new Animal('kitty');
 
-console.log(cat.name)  //cat， this 被绑定在了 cat 上
+console.log(cat.name)  //kitty 
 ```
+this 被绑定在了 cat 上
