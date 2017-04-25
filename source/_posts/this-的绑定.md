@@ -17,9 +17,8 @@ function fun() {
 ````
 声明一个函数 fun
 
-````
+```
 var name = 'Tim';
-
 fun()   // tim
 ```
 在全局中声明了变量 name ,此时在全局中引用了 `fun()` 此时 函数中的 name 就是指向的是全局中的 name
@@ -108,12 +107,35 @@ bar()   //undefind
 > this 绑定在 新创建的对象上
 
 ```
-function Anmail(name) {
+function Cat(name) {
     this.name = name;
+    this.food = 'fish';
 }
 
-var cat = new Animal('kitty');
+var yellowCat = new Cat('Kittey');
 
-console.log(cat.name)  //kitty 
+console.log(yellowCat.name);  //kittey
 ```
-this 被绑定在了 cat 上
+this 被绑定在了 yellowCat 上，yellowCat 默认继承了 Cat 类的属性。
+
+```
+Cat.prototype.eat = function () {
+    console.log(this.food);
+}
+yellowCat.eat(); //fish
+```
+在 Cat 的原型链上创建一个吃的方法,里面绑定了食物。
+调用这个食物方法的是 yellowCat , tish 指向的的是 yellowCat。所以输出 fish
+
+```
+yellowCat.food = 'banana';
+yellowCat.eat();  //banana
+```
+调用这个 `eat()` 的是 yellowCat , tish 指向的的是 yellowCat, yellowCat 的 food 已经被修改 
+
+```
+var blueCat = new Cat('Tim');
+
+blueCat.eat(); //fish
+```
+调用 `eat()` 的是 blueCat, this 指向 blueCat, blueCat 继承了 Cat 的所有属性，由于 Cat 内部的 food 依旧是 fish，所以 blueCat 的 food 依旧是 fish
