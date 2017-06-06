@@ -61,7 +61,6 @@ bar()   //undefind
 最后调用 fun  的是 global，而 global 中并未定义 name
 
 ## this 的显示绑定
-
 - call
 
    > 绑定在 call() 中传入的第一个参数上 ` fun.call(obj, arg1, arg2,...) ` fun 的 this 绑定在 obj 上 
@@ -79,7 +78,6 @@ bar()   //undefind
     ```
 
 - apply
-
     > 同 call ，不同在于传入的第二个参数是一个数组 `apply(obj, arguments)`
    
     ```js
@@ -140,6 +138,15 @@ blueCat.eat(); //fish
 ```
 调用 `eat()` 的是 blueCat, this 指向 blueCat, blueCat 继承了 Cat 的所有属性，由于 Cat 内部的 food 依旧是 fish，所以 blueCat 的 food 依旧是 fish
 
-## 关于 this
-
+## 箭头函数中的 this
+在箭头函数中 this 是绑定在创建的时候的
+```js
+function a() {
+    const name = 'a';
+    const fun = () => {
+        console.log(this.name);
+    }
+    fun();
+}
+```
  
