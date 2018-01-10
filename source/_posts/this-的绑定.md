@@ -7,8 +7,33 @@ tags: js
 > this 的调用总是决定于最后调用那个函数的上下文！
 <!--more-->
 
+## this 
+```js
+function foo(num) {
+    console.log( "foo: " + num );
+    // 记录foo 被调用的次数
+    this.count++;
+}
+foo.count = 0;
+var i;
+for (i=0; i<10; i++) {
+    if (i > 5) {
+        foo( i );
+    }
+}
+// foo: 6
+// foo: 7
+// foo: 8
+// foo: 9
+// foo 被调用了多少次？
+console.log( foo.count ); // 0 -- WTF?
+```
+- 为什么 count 的输出和预期的不符？
+- 为什么 count 是全局的，并且值是 NaN?
+
+
 ## this 的默认调用
-> this 默认调用于全局
+> this 默认调用于全局，严格模式下绑定到 undefined
 
 ```js
 function fun() {
@@ -22,6 +47,7 @@ var name = 'Tim';
 fun()   // tim
 ```
 在全局中声明了变量 name ,此时在全局中引用了 `fun()` 此时 函数中的 name 就是指向的是全局中的 name
+
 
 ## this 的隐式绑定
 > 决定于最后调用函数的上下文
@@ -60,9 +86,11 @@ bar()   //undefind
 ```
 最后调用 fun  的是 global，而 global 中并未定义 name
 
-## this 的显示绑定
-- call
 
+## this 的显示绑定
+> 显示绑定的优先级高于隐示绑定，默认优先级最低。 
+
+- call
    > 绑定在 call() 中传入的第一个参数上 ` fun.call(obj, arg1, arg2,...) ` fun 的 this 绑定在 obj 上 
 
     ```js
@@ -138,8 +166,9 @@ blueCat.eat(); //fish
 ```
 调用 `eat()` 的是 blueCat, this 指向 blueCat, blueCat 继承了 Cat 的所有属性，由于 Cat 内部的 food 依旧是 fish，所以 blueCat 的 food 依旧是 fish
 
+
 ## 箭头函数中的 this
-在箭头函数中 this 是绑定在创建的时候的
+> 在箭头函数中 this 是绑定在创建的时候的
 ```js
 function a() {
     const name = 'a';
@@ -149,4 +178,12 @@ function a() {
     fun();
 }
 ```
+
+## 小结
+
+### 判断 this 的绑定
+1. 是否在 new 中调用
+2. 是有 apply ， call 或 bind 的显示绑定
+3. 是否有隐式的绑定
+4. 默认绑定 window，严格模式下绑定到 undefined 
  
